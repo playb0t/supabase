@@ -23,6 +23,7 @@
     var(--font-inter), Inter, Helvetica Neue, Helvetica, ui-sans-serif, system-ui, sans-serif;
   --font-heading: var(--font-manrope, var(--font-sans));
   --font-mono: 'Source Code Pro', ui-monospace, Menlo, monospace;
+  --font-serif: 'Newsreader', Georgia, serif;
 }
 
 /* kb's strong ease-out for entrances and menus, used as `ease-out-strong` or var(--ease-out-strong) */
