@@ -15,7 +15,7 @@ import {
   STORAGE_PROMPT,
 } from '@/lib/ai/prompts'
 import { isOptInLevelAtLeast, updateOptInLevelInputSchema } from '@/lib/ai/tool-filter'
-import { NO_DATA_PERMISSIONS } from '@/lib/ai/tools/tool-sanitizer'
+import { NO_DATA_PERMISSIONS, toModelRows } from '@/lib/ai/tools/tool-sanitizer'
 import { fixSqlBackslashEscapes } from '@/lib/ai/util'
 
 const KNOWLEDGE = {
@@ -96,7 +96,7 @@ export const getStudioTools = (ctx: StudioToolsContext = {}) => {
       },
       toModelOutput: ({ output }) => {
         return aiOptInLevel === 'schema_and_log_and_data'
-          ? { type: 'json', value: output.rows }
+          ? { type: 'json', value: toModelRows(output.rows, output.totalRows) }
           : { type: 'text', value: NO_DATA_PERMISSIONS }
       },
     }),
