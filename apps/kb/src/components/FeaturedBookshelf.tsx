@@ -126,6 +126,9 @@ const BookCard = ({ item }: BookCardProps) => {
           {item.title}
         </h3>
         <p className="m-0 text-sm leading-5.5 text-foreground-light">{item.description}</p>
+        {item.date ? (
+          <p className="m-0 text-xs leading-5 text-foreground-lighter">{item.date}</p>
+        ) : null}
       </div>
     </a>
   )
