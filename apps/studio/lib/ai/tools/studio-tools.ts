@@ -2,6 +2,7 @@ import { acceptUntrustedSql, untrustedSql } from '@supabase/pg-meta'
 import { tool } from 'ai'
 import { z } from 'zod'
 
+import { DEFAULT_CELL_ROW_LIMIT } from '@/components/interfaces/Explorer/QueryCell/QueryCell.utils'
 import { deployEdgeFunction } from '@/data/edge-functions/edge-functions-deploy-mutation'
 import { executeSql } from '@/data/sql/execute-sql-mutation'
 import type { AiOptInLevel } from '@/hooks/misc/useOrgOptedIntoAi'
@@ -85,7 +86,13 @@ export const getStudioTools = (ctx: StudioToolsContext = {}) => {
           abortSignal,
           authHeaders
         )
-        return { rows: Array.isArray(result) ? result : [], optInLevel: aiOptInLevel }
+        const rows = Array.isArray(result) ? result : []
+        // same row cap as the query cell, unbounded results freeze the chat and overflow the model
+        return {
+          rows: rows.slice(0, DEFAULT_CELL_ROW_LIMIT),
+          totalRows: rows.length,
+          optInLevel: aiOptInLevel,
+        }
       },
       toModelOutput: ({ output }) => {
         return aiOptInLevel === 'schema_and_log_and_data'
